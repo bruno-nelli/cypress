@@ -23,3 +23,23 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('criarConta', (timestamp) => {
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:3000/user/signup',
+    body: {
+      email: `${timestamp}@email.com`,
+      fullName: `${timestamp}`,
+      userName: `${timestamp}`,
+      password: 'fghijklm'
+    },
+    headers: {
+      accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    expect(response.status).to.eq(204)
+    cy.log(`Usuário: ${timestamp} criado com sucesso!`)
+  })
+})
